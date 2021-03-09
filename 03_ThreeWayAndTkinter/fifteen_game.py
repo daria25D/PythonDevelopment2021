@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import random
 
 
 class FifteenGame(ttk.Frame):
@@ -8,6 +9,7 @@ class FifteenGame(ttk.Frame):
         ttk.Frame.__init__(self, master, style='Game.TFrame')
         self.grid(sticky='NSEW')
         self.createWidgets()
+        self.randomizeNewGame()
 
 
     def configureStyle(self):
@@ -34,7 +36,7 @@ class FifteenGame(ttk.Frame):
     def createWidgets(self):
         self.enableStretching()
         self.createGameFieldLayout()
-        self.startButton = ttk.Button(self, text='NEW GAME', style='Control.TButton')
+        self.startButton = ttk.Button(self, text='NEW GAME', style='Control.TButton', command=self.randomizeNewGame)
         self.quitButton  = ttk.Button(self, text='QUIT', style='Control.TButton', command=self.quit)
         self.startButton.grid(row=4, column=0, columnspan=2, sticky='NSEW', padx=10, pady=10, ipady=5)
         self.quitButton.grid(row=4, column=2, columnspan=2, sticky='NSEW', padx=10, pady=10, ipady=5)
@@ -45,9 +47,6 @@ class FifteenGame(ttk.Frame):
         self.blankPosition = 15
         self.gameButtons = [ttk.Button(self, text=str(i), style='Game.TButton') for i in range(1, 16)]
         for i, button in enumerate(self.gameButtons):
-            row = i // 4
-            column = i % 4
-            button.grid(row=row, column=column, sticky='NSEW')
             button.configure(command= lambda idx=i: self.moveButton(idx))
 
 
@@ -88,6 +87,37 @@ class FifteenGame(ttk.Frame):
         if isWin:
             tk.messagebox.showinfo(message='You won!')
 
+
+    def randomizeNewGame(self):
+        numSteps = random.randint(10, 80)
+        for i in range(numSteps):
+            blank_row = self.blankPosition // 4
+            blank_col = self.blankPosition % 4
+            newPossibleBlankPositions = []
+            if blank_col != 0 and blank_col != 3:
+                newPossibleBlankPositions.extend([self.blankPosition - 1, self.blankPosition + 1])
+            elif blank_col == 0:
+                newPossibleBlankPositions.append(self.blankPosition + 1)
+            elif blank_col == 3:
+                newPossibleBlankPositions.append(self.blankPosition - 1)
+
+            if blank_row != 0 and blank_row != 3:
+                newPossibleBlankPositions.extend([self.blankPosition - 4, self.blankPosition + 4])
+            elif blank_row == 0:
+                newPossibleBlankPositions.append(self.blankPosition + 4)
+            elif blank_row == 3:
+                newPossibleBlankPositions.append(self.blankPosition - 4)
+
+            newBlankPosition = random.choice(newPossibleBlankPositions) #coord of button
+            idx = self.currentPositions.index(newBlankPosition)
+            self.currentPositions[idx] = self.blankPosition
+            self.blankPosition = newBlankPosition
+
+        #reposition buttons
+        for i, button in enumerate(self.gameButtons):
+            row = self.currentPositions[i] // 4
+            column = self.currentPositions[i] % 4
+            button.grid(row=row, column=column, sticky='NSEW')
 
 def main():
     game = FifteenGame()
