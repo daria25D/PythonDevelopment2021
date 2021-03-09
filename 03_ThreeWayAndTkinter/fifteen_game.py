@@ -52,33 +52,28 @@ class FifteenGame(ttk.Frame):
 
 
     def moveButton(self, idx):
-        if (self.currentPositions[idx] - 4 == self.blankPosition) and (self.blankPosition >= 0):
+        pos = self.currentPositions[idx]
+        cur_row = pos // 4
+        cur_col = pos % 4
+        if (pos - 4 == self.blankPosition) and (self.blankPosition >= 0):
             # move up
-            new_row = self.currentPositions[idx] // 4 - 1
-            new_col = self.currentPositions[idx] % 4
-            self.gameButtons[idx].grid(row=new_row, column=new_col)
-            self.blankPosition = self.currentPositions[idx]
+            self.gameButtons[idx].grid(row=cur_row - 1, column=cur_col)
+            self.blankPosition = pos
             self.currentPositions[idx] -= 4
-        elif (self.currentPositions[idx] + 4 == self.blankPosition) and (self.blankPosition < 16):
+        elif (pos + 4 == self.blankPosition) and (self.blankPosition < 16):
             # move down
-            new_row = self.currentPositions[idx] // 4 + 1
-            new_col = self.currentPositions[idx] % 4
-            self.gameButtons[idx].grid(row=new_row, column=new_col)
-            self.blankPosition = self.currentPositions[idx]
+            self.gameButtons[idx].grid(row=cur_row + 1, column=cur_col)
+            self.blankPosition = pos
             self.currentPositions[idx] += 4
-        elif (self.currentPositions[idx] - 1 == self.blankPosition) and (self.blankPosition % 4 != 3):
+        elif (pos - 1 == self.blankPosition) and (self.blankPosition % 4 != 3):
             # move left
-            new_row = self.currentPositions[idx] // 4
-            new_col = self.currentPositions[idx] % 4 - 1
-            self.gameButtons[idx].grid(row=new_row, column=new_col)
-            self.blankPosition = self.currentPositions[idx]
+            self.gameButtons[idx].grid(row=cur_row, column=cur_col - 1)
+            self.blankPosition = pos
             self.currentPositions[idx] -= 1
-        elif (self.currentPositions[idx] + 1 == self.blankPosition) and (self.blankPosition % 4 != 0):
+        elif (pos + 1 == self.blankPosition) and (self.blankPosition % 4 != 0):
             # move right
-            new_row = self.currentPositions[idx] // 4
-            new_col = self.currentPositions[idx] % 4 + 1
-            self.gameButtons[idx].grid(row=new_row, column=new_col)
-            self.blankPosition = self.currentPositions[idx]
+            self.gameButtons[idx].grid(row=cur_row, column=cur_col + 1)
+            self.blankPosition = pos
             self.currentPositions[idx] += 1
 
         self.checkWinning()
