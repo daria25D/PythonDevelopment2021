@@ -80,6 +80,7 @@ class FifteenGame(ttk.Frame):
                 break
         if isWin:
             tk.messagebox.showinfo(message='You won!')
+            self.randomizeNewGame()
 
     def randomizeNewGame(self):
         numSteps = random.randint(10, 80)
