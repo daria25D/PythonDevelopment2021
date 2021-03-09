@@ -33,19 +33,20 @@ class FifteenGame(ttk.Frame):
 
     def createWidgets(self):
         self.enableStretching()
-        self.createGameField()
+        self.createGameFieldLayout()
         self.startButton = ttk.Button(self, text='NEW GAME', style='Control.TButton')
         self.quitButton  = ttk.Button(self, text='QUIT', style='Control.TButton', command=self.quit)
         self.startButton.grid(row=4, column=0, columnspan=2, sticky='NSEW', padx=10, pady=10, ipady=5)
         self.quitButton.grid(row=4, column=2, columnspan=2, sticky='NSEW', padx=10, pady=10, ipady=5)
 
 
-    def createGameField(self):
+    def createGameFieldLayout(self):
         self.gameButtons = [ttk.Button(self, text=str(i), style='Game.TButton') for i in range(1, 16)]
         for i, button in enumerate(self.gameButtons):
             row = i // 4
             column = i % 4
             button.grid(row=row, column=column, sticky='NSEW')
+
 
 
 def main():
