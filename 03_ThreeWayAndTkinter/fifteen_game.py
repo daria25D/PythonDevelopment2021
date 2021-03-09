@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 
 class FifteenGame(ttk.Frame):
@@ -80,6 +80,18 @@ class FifteenGame(ttk.Frame):
             self.gameButtons[idx].grid(row=new_row, column=new_col)
             self.blankPosition = self.currentPositions[idx]
             self.currentPositions[idx] += 1
+
+        self.checkWinning()
+
+
+    def checkWinning(self):
+        isWin = True
+        for i in range(15):
+            if self.currentPositions[i] != i:
+                isWin = False
+                break
+        if isWin:
+            tk.messagebox.showinfo(message='You won!')
 
 
 def main():
