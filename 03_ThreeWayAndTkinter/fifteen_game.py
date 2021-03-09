@@ -41,12 +41,45 @@ class FifteenGame(ttk.Frame):
 
 
     def createGameFieldLayout(self):
+        self.currentPositions = [i for i in range(15)]  # currentPositions[buttonIdx] = coord
+        self.blankPosition = 15
         self.gameButtons = [ttk.Button(self, text=str(i), style='Game.TButton') for i in range(1, 16)]
         for i, button in enumerate(self.gameButtons):
             row = i // 4
             column = i % 4
             button.grid(row=row, column=column, sticky='NSEW')
+            button.configure(command= lambda idx=i: self.moveButton(idx))
 
+
+    def moveButton(self, idx):
+        if (self.currentPositions[idx] - 4 == self.blankPosition) and (self.blankPosition >= 0):
+            # move up
+            new_row = self.currentPositions[idx] // 4 - 1
+            new_col = self.currentPositions[idx] % 4
+            self.gameButtons[idx].grid(row=new_row, column=new_col)
+            self.blankPosition = self.currentPositions[idx]
+            self.currentPositions[idx] -= 4
+        elif (self.currentPositions[idx] + 4 == self.blankPosition) and (self.blankPosition < 16):
+            # move down
+            new_row = self.currentPositions[idx] // 4 + 1
+            new_col = self.currentPositions[idx] % 4
+            self.gameButtons[idx].grid(row=new_row, column=new_col)
+            self.blankPosition = self.currentPositions[idx]
+            self.currentPositions[idx] += 4
+        elif (self.currentPositions[idx] - 1 == self.blankPosition) and (self.blankPosition % 4 != 3):
+            # move left
+            new_row = self.currentPositions[idx] // 4
+            new_col = self.currentPositions[idx] % 4 - 1
+            self.gameButtons[idx].grid(row=new_row, column=new_col)
+            self.blankPosition = self.currentPositions[idx]
+            self.currentPositions[idx] -= 1
+        elif (self.currentPositions[idx] + 1 == self.blankPosition) and (self.blankPosition % 4 != 0):
+            # move right
+            new_row = self.currentPositions[idx] // 4
+            new_col = self.currentPositions[idx] % 4 + 1
+            self.gameButtons[idx].grid(row=new_row, column=new_col)
+            self.blankPosition = self.currentPositions[idx]
+            self.currentPositions[idx] += 1
 
 
 def main():
