@@ -62,6 +62,14 @@ class InputLabel(tk.Label):
             if event.keysym == 'Right' or event.keysym == 'End':
                 self.cursorPosition = min(self.cursorPosition + 1, len(self.stringVar.get()))
                 self.move_cursor()
+            if event.keysym == 'BackSpace':
+                s = self.stringVar.get()
+                self.stringVar.set(s[:self.cursorPosition - 1] + s[self.cursorPosition:])
+                self.cursorPosition = max(self.cursorPosition - 1, 0)
+                self.move_cursor()
+            if event.keysym == 'Delete':
+                s = self.stringVar.get()
+                self.stringVar.set(s[:self.cursorPosition] + s[min(len(s), self.cursorPosition + 1):])
 
 
 class Application(tk.Frame):
