@@ -1,18 +1,22 @@
 import tkinter as tk
+from tkinter import font
 
 class InputLabel(tk.Label):
     def __init__(self, master):
         self.stringVar = tk.StringVar()
         self.cursorPosition = 0
+        self.labelFont = font.Font(family='Courier New', size=12, weight='normal')
+        self.initialWidth = 10
         tk.Label.__init__(self, master,
                           anchor='w',
                           cursor='xterm',
+                          font=self.labelFont,
                           highlightthickness=1,
                           padx=2,
                           pady=2,
                           takefocus=1,
                           textvariable=self.stringVar,
-                          width=20)
+                          width=self.initialWidth)
         self.master = master
         self.Frame = tk.Frame(self)
         self.Frame.place(relheight=0.98, width=2)
@@ -37,6 +41,7 @@ class InputLabel(tk.Label):
                 s = self.stringVar.get()
                 self.stringVar.set(s[:self.cursorPosition] + event.char + s[self.cursorPosition:])
                 self.cursorPosition += 1
+                self.configure(width=max(self.initialWidth, len(s) + 1))
             if event.keysym == 'Left' or event.keysym == 'Home':
                 self.cursorPosition = max(self.cursorPosition - 1, 0)
             if event.keysym == 'Right' or event.keysym == 'End':
