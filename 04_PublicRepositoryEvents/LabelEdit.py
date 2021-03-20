@@ -65,7 +65,6 @@ class Application(tk.Frame):
 
     def createWidgets(self):
         self.label = InputLabel(self)
-        self.label.bind('<Button-1>', self.on_mouse_click)
         self.label.pack()
         self.button = tk.Button(self, text='QUIT', command=quit)
         self.button.pack()
