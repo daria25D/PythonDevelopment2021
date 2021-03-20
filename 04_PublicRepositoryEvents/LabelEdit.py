@@ -18,7 +18,7 @@ class InputLabel(tk.Label):
                           textvariable=self.stringVar,
                           width=self.initialWidth)
         self.master = master
-        self.Frame = tk.Frame(self)
+        self.Frame = tk.Frame(self, bg='#333333')
         self.Frame.place(relheight=0.98, width=2)
 
         self.bind('<Button-1>', self.on_mouse_click)
