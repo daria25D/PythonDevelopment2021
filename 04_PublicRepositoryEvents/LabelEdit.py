@@ -28,6 +28,14 @@ class InputLabel(tk.Label):
 
     def on_mouse_click(self, event):
         event.widget.focus_set()
+        cursorX = event.x
+        s = self.stringVar.get()
+        self.cursorPosition = len(s)
+        for i in range(len(s) + 1):
+            if self.labelFont.measure(s[:i]) >= cursorX:
+                self.cursorPosition = max(i - 1, 0)
+                break
+        self.move_cursor()
 
     def activate_cursor(self, event):
         self.cursor.configure(bg='#cccccc')
