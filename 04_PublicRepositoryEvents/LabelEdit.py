@@ -5,6 +5,7 @@ class InputLabel(tk.Label):
         self.stringVar = tk.StringVar()
         self.cursorPosition = 0
         tk.Label.__init__(self, master,
+                          anchor='w',
                           cursor='xterm',
                           highlightthickness=1,
                           padx=2,
