@@ -2,7 +2,13 @@ import tkinter as tk
 
 class InputLabel(tk.Label):
     def __init__(self, master):
-        tk.Label.__init__(self, master)
+        tk.Label.__init__(self, master,
+                          cursor='xterm',
+                          highlightthickness=1,
+                          padx=2,
+                          pady=2,
+                          takefocus=1,
+                          width=20)
         self.master = master
 
 
