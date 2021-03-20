@@ -14,7 +14,11 @@ class InputLabel(tk.Label):
                           textvariable=self.stringVar,
                           width=20)
         self.master = master
+        self.bind('<Button-1>', self.on_mouse_click)
         self.bind('<Key>', self.on_key_pressed)
+
+    def on_mouse_click(self, event):
+        event.widget.focus_set()
 
     def on_key_pressed(self, event):
         if self.focus_get() is self:
