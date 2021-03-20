@@ -18,8 +18,8 @@ class InputLabel(tk.Label):
                           textvariable=self.stringVar,
                           width=self.initialWidth)
         self.master = master
-        self.Frame = tk.Frame(self, bg='#333333')
-        self.Frame.place(relheight=0.98, width=2)
+        self.cursor = tk.Frame(self, bg='#333333')
+        self.cursor.place(relheight=0.98, width=2)
 
         self.bind('<Button-1>', self.on_mouse_click)
         self.bind('<Key>', self.on_key_pressed)
@@ -30,15 +30,15 @@ class InputLabel(tk.Label):
         event.widget.focus_set()
 
     def activate_cursor(self, event):
-        self.Frame.configure(bg='#cccccc')
+        self.cursor.configure(bg='#cccccc')
 
     def deactivate_cursor(self, event):
-        self.Frame.configure(bg='#333333')
+        self.cursor.configure(bg='#333333')
 
     def move_cursor(self):
         s = self.stringVar.get()[:self.cursorPosition]
         textLengthInPixels = self.labelFont.measure(s)
-        self.Frame.place(x=textLengthInPixels)
+        self.cursor.place(x=textLengthInPixels)
 
     def on_key_pressed(self, event):
         if self.focus_get() is self:
