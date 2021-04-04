@@ -18,6 +18,10 @@ class GraphEdit(tk.Frame):
         self.quitButton.grid(row=0, column=2, sticky='NSEW')
         self.graphEditor.grid(row=1, column=1, columnspan=2, sticky='NSEW')
 
+        self.graphEditor.bind('<ButtonPress-1>', self.select_oval)
+        self.graphEditor.bind('<B1-Motion>', self.change_oval)
+        self.graphEditor.bind('<ButtonRelease-1>', self.release_oval)
+
     def enableStretching(self):
         top = self.winfo_toplevel()
         top.rowconfigure(0, weight=1)
@@ -27,6 +31,18 @@ class GraphEdit(tk.Frame):
         self.rowconfigure(1, weight=1, minsize=100)
         self.columnconfigure(1, weight=1, minsize=50, pad=2)
         self.columnconfigure(2, weight=1, minsize=50, pad=2)
+
+    def select_oval(self, event):
+        self.startX = event.x
+        self.startY = event.y
+        self.figures = self.graphEditor.create_oval(event.x, event.y, event.x, event.y)
+        #logic for existing ovals
+
+    def change_oval(self, event):
+        self.graphEditor.coords(self.figures, self.startX, self.startY, event.x, event.y)
+
+    def release_oval(self, event):
+        pass
 
 
 def main():
