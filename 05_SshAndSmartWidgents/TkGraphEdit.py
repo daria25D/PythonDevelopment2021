@@ -12,7 +12,7 @@ class GraphEdit(tk.Frame):
         self.textEditor = tk.Text(self, undo=True, wrap=tk.WORD)
         self.colorPicker = tk.Button(self, text='Color')
         self.quitButton = tk.Button(self, text='Quit', command=self.quit)
-        self.graphEditor = tk.Canvas(self)
+        self.graphEditor = tk.Canvas(self, bg='#eeeeee')
         self.textEditor.grid(row=0, column=0, rowspan=2, sticky='NSEW')
         self.colorPicker.grid(row=0, column=1, sticky='NSEW')
         self.quitButton.grid(row=0, column=2, sticky='NSEW')
