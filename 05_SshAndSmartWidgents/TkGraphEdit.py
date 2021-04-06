@@ -8,8 +8,7 @@ class GraphEdit(tk.Frame):
         self.enableStretching()
         self.grid(sticky='NSEW')
         self.figures = []
-        self.startPositions = []
-        self.descriptions = []
+        self.selected = False
 
     def createWidgets(self):
         self.textEditor = tk.Text(self, undo=True, wrap=tk.WORD)
@@ -21,7 +20,7 @@ class GraphEdit(tk.Frame):
         self.quitButton.grid(row=0, column=2, sticky='NSEW')
         self.graphEditor.grid(row=1, column=1, columnspan=2, sticky='NSEW')
 
-        self.graphEditor.bind('<ButtonPress-1>', self.select_oval)
+        self.graphEditor.bind('<ButtonPress-1>', self.draw_oval)
         self.graphEditor.bind('<B1-Motion>', self.change_oval)
         self.graphEditor.bind('<ButtonRelease-1>', self.release_oval)
 
@@ -35,18 +34,34 @@ class GraphEdit(tk.Frame):
         self.columnconfigure(1, weight=1, minsize=50, pad=2)
         self.columnconfigure(2, weight=1, minsize=50, pad=2)
 
-    def select_oval(self, event):
+    def draw_oval(self, event):
+        if self.selected == True:
+            return
+        self.selected = False
         self.startX = event.x
         self.startY = event.y
-        self.figures = self.graphEditor.create_oval(event.x, event.y, event.x, event.y)
-        #logic for existing ovals
+        self.curId = self.graphEditor.create_oval(event.x, event.y, event.x, event.y, fill='#cccccc')
+        self.graphEditor.tag_bind(self.curId, '<Button>', self.select_oval)
+        self.figures.append(self.curId)
 
     def change_oval(self, event):
-        self.graphEditor.coords(self.figures, self.startX, self.startY, event.x, event.y)
+        if self.selected == False:
+            self.graphEditor.coords(self.curId, self.startX, self.startY, event.x, event.y)
+        else:
+            self.graphEditor.move(self.curId, event.x - self.startX, event.y - self.startY)
+            self.startX = event.x
+            self.startY = event.y
 
     def release_oval(self, event):
-        self.description = f'Oval {self.startX} {self.startY} {event.x} {event.y}\n'
+        self.selected = False
+        self.description = f'Oval {self.curId} {self.startX} {self.startY} {event.x} {event.y}\n'
         self.textEditor.insert(tk.END, self.description)
+
+    def select_oval(self, event):
+        self.selected = True
+        self.startX = event.x
+        self.startY = event.y
+        self.curId = event.widget.find_closest(event.x, event.y)
 
 
 def main():
