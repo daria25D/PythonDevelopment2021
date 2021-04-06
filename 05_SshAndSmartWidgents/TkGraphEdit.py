@@ -7,6 +7,9 @@ class GraphEdit(tk.Frame):
         self.createWidgets()
         self.enableStretching()
         self.grid(sticky='NSEW')
+        self.figures = []
+        self.startPositions = []
+        self.descriptions = []
 
     def createWidgets(self):
         self.textEditor = tk.Text(self, undo=True, wrap=tk.WORD)
@@ -42,7 +45,8 @@ class GraphEdit(tk.Frame):
         self.graphEditor.coords(self.figures, self.startX, self.startY, event.x, event.y)
 
     def release_oval(self, event):
-        pass
+        self.description = f'Oval {self.startX} {self.startY} {event.x} {event.y}\n'
+        self.textEditor.insert(tk.END, self.description)
 
 
 def main():
